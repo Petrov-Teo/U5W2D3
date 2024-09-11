@@ -3,7 +3,6 @@ package PetrovTodo.Spring_Web_With_DB.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,11 +18,20 @@ public class Post {
     private String categoria;
     private String titolo;
     private String cover;//Immagine
+    @Lob
     private String contenuto;
     private double tempoDiLettura;
+    @ManyToOne
+    @JoinColumn(name = "autore_id")
+    private AutorePost autore;
 
-    @ManyToMany
-    @JoinTable(name = "post_autori", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "autore_id"))
-    private List<AutorePost> autori;
+    public Post(String categoria, String titolo, String cover, String contenuto, double tempoDiLettura, AutorePost autore) {
+        this.categoria = categoria;
+        this.titolo = titolo;
+        this.cover = cover;
+        this.contenuto = contenuto;
+        this.tempoDiLettura = tempoDiLettura;
+        this.autore = autore;
+    }
 
 }

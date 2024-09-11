@@ -1,5 +1,7 @@
 package PetrovTodo.Spring_Web_With_DB.services;
 
+import PetrovTodo.Spring_Web_With_DB.entities.AutorePost;
+import PetrovTodo.Spring_Web_With_DB.entities.CreazionePost;
 import PetrovTodo.Spring_Web_With_DB.entities.Post;
 import PetrovTodo.Spring_Web_With_DB.exceptions.BadRequestExeption;
 import PetrovTodo.Spring_Web_With_DB.exceptions.NotFoundException;
@@ -17,6 +19,9 @@ import java.util.UUID;
 public class PostService {
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private AutorService autorService;
+
 
     public Page<Post> findAll(int page, int size, String sortBy) {
         if (page > 100) page = 100;
@@ -24,15 +29,20 @@ public class PostService {
         return this.postRepository.findAll(pageable);
     }
 
-    public Post savePost(Post body) {
-        this.postRepository.findByTitle(body.getTitolo()).ifPresent(autorePost -> {
+    public Post savePost(CreazionePost body) {
+        this.postRepository.findByTitolo(body.getTitolo()).ifPresent(autorePost -> {
             throw new BadRequestExeption("il Titolo " + body.getTitolo() + " è già esistente!");
         });
+        if (body.getIdAutore() == null) {
+            throw new BadRequestExeption("L'ID autore non può essere nullo.");
+        }
+        AutorePost foundIdAutore = autorService.findById(body.getIdAutore());
+        System.out.println(foundIdAutore);
         int wordCount = body.getContenuto().split(" ").length;
         double tempoDiLetturaStimato = (double) (wordCount / 100);
-        body.setTempoDiLettura(tempoDiLetturaStimato);
-        this.postRepository.save(body);
-        return body;
+        Post post = new Post(body.getCategoria(), body.getTitolo(), "https://picsum.photos/200/300", body.getContenuto(), tempoDiLetturaStimato, foundIdAutore);
+
+        return postRepository.save(post);
     }
 
 
@@ -41,7 +51,7 @@ public class PostService {
     }
 
     public Post findByIdAndUpdate(UUID postId, Post body) {
-        this.postRepository.findByTitle(body.getTitolo()).ifPresent(autorePost -> {
+        this.postRepository.findByTitolo(body.getTitolo()).ifPresent(autorePost -> {
             throw new BadRequestExeption("il Titolo " + body.getTitolo() + " è già esistente!");
         });
         Post found = this.findById(postId);

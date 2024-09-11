@@ -27,5 +27,4 @@ public class AutorePost {
     private String email;
     private LocalDate dataDiNascita;
     private String avatar;
-
 }

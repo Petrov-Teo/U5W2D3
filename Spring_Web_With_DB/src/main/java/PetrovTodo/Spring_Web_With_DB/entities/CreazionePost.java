@@ -11,4 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CreazionePost {
     private UUID idAutore;
+    private String categoria;
+    private String titolo;
+    private String contenuto;
 }
