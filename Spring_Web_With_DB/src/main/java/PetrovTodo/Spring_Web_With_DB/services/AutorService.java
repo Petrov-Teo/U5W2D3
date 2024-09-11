@@ -30,7 +30,7 @@ public class AutorService {
         this.autorePostRepo.findByEmail(body.getEmail()).ifPresent(autorePost -> {
             throw new BadRequestExeption("L'email " + body.getEmail() + " è già in uso!");
         });
-        body.setAvatar("http://localhost:3001/users/?name=" + body.getNome() + "+" + body.getCognome());
+        body.setAvatar("https://ui-avatars.com/api/?name=" + body.getNome() + "+" + body.getCognome());
         this.autorePostRepo.save(body);
         return body;
     }
