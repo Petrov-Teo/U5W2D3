@@ -31,7 +31,6 @@ public class AutorController {
     private Page<AutorePost> getAllAutors(@RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size,
                                           @RequestParam(defaultValue = "idAutore") String sortBy) {
-
         return this.autorService.findAll(page, size, sortBy);
     }
 

@@ -4,6 +4,6 @@ import java.util.UUID;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(UUID id) {
-        super("UPSSSS, l'elemento " + id + "non trovato! Ritenta saraì più fortunato!");
+        super("UPSSSS, l'elemento " + " " + id + " " + "non è stato trovato! Ritenta saraì più fortunato! ;-) ");
     }
 }
